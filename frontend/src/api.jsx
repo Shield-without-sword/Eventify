@@ -107,3 +107,41 @@ export const UpdateEmployeeById = async (empObj, id) => {
     }
 };
 
+
+export const createRSVPResponse = async (rsvpData) => {
+    const url = `${BASE_URL}/api/rsvp`;
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(rsvpData)
+    };
+    try {
+        const result = await fetch(url, options);
+        const data = await result.json();
+        return data;
+    } catch (err) {
+        return err;
+    }
+};
+
+
+export const GetAllRSVPs = async (search = '', page = 1, limit = 5) => {
+    const url =
+        `${BASE_URL}/api/rsvp?search=${search}&page=${page}&limit=${limit}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    try {
+        const result = await fetch(url, options);
+        const { data } = await result.json();
+
+        return data;
+    } catch (err) {
+        return err;
+    }
+};

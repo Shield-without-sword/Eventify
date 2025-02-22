@@ -12,6 +12,9 @@ const app = express();
 const server = createServer(app); // Create an HTTP server
 const PORT = process.env.PORT || 8080;
 
+const rsvpRoutes = require('./Routes/RSVPRoutes');
+
+
 // MongoDB connection (ensure this is handled in db.js and only called once)
 require("./Models/db"); // Ensures MongoDB connects before starting the server
 
@@ -30,9 +33,12 @@ app.use('/api/cattle', cattleRoutes);
 // Initialize the chat server
 initializeChatServer(server);
 
+
+app.use('/api/rsvp', rsvpRoutes);
+
 // Start the server
 server.listen(PORT, () => {
-  console.log(`Server is running on PORT: ${PORT}`);
+  console.log("Server is running on PORT: ${PORT}");
 });
 
 // Add error handling

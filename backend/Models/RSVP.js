@@ -21,7 +21,7 @@ const RSVPResponseSchema = new Schema({
     },
     response: {
         type: String,
-        enum: ['going', 'maybe', 'not-going'],
+        enum: ['going', 'not-going'],
         required: true
     },
     createdAt: {

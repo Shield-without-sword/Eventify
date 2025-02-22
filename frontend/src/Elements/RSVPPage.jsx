@@ -1,18 +1,28 @@
+//RSVPPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { GetEmployeeDetailsById } from '../api';
+import { createRSVPResponse } from '../api';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
-import { Calendar, MapPin, Users, Clock } from 'lucide-react';
+import { Calendar, MapPin, Users} from 'lucide-react';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
 
 const RSVPPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [employee, setEmployee] = useState(null);
   const [error, setError] = useState(null);
-
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    response: 'null'
+  });
   
   const formatDate = (dateString) => {
     if (!dateString) return 'Not specified';
@@ -36,6 +46,47 @@ const RSVPPage = () => {
 
     fetchEmployeeDetails();
   }, [id]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Validate if response is selected
+    if (!formData.response) {
+      setError('Please select whether you are accepting or declining the invitation');
+      return;
+    }
+  
+    try {
+      const response = await createRSVPResponse({
+        ...formData,
+        eventId: id
+      });
+  
+      if (response.success) {
+        // You could add a success toast/alert here
+        navigate('/dashboard/employee');
+      } else {
+        throw new Error(response.message || 'Failed to submit RSVP');
+      }
+    } catch (err) {
+      setError('Failed to submit RSVP: ' + err.message);
+    }
+  };
+  
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleResponseChange = (value) => {
+    setFormData(prev => ({
+      ...prev,
+      response: value
+    }));
+  };
 
   if (error) {
     return (
@@ -77,7 +128,7 @@ const RSVPPage = () => {
                   {employee.profileImage ? (
                     <img
                       src={employee.profileImage}
-                      alt={`${employee.name}'s photo`}
+                      alt={"${employee.name}'s photo"}
                       className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
@@ -103,7 +154,7 @@ const RSVPPage = () => {
                     <div className="flex items-center gap-2">
                       <Calendar className="h-5 w-5 text-gray-500" />
                       <span>
-                     Period: {formatDate(employee.startAt)} - {formatDate(employee.endAt)}
+                        Period: {formatDate(employee.startAt)} - {formatDate(employee.endAt)}
                       </span>
                     </div>
                   </div>
@@ -118,40 +169,98 @@ const RSVPPage = () => {
           </CardContent>
         </Card>
 
-        {/* Details Section */}
-        <Card>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4"> 
-              </div>
-              <Button 
-          variant="outline"
-          onClick={() => navigate('/dashboard/employee')}
-          className="bg-yellow-300 w-full md:w-auto"
-        >
-          RSVP
-        </Button>
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Schedule</h3>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-gray-500" />
-                  <div>
-                    <p className="font-medium">Start Date</p>
-                    <p className="text-gray-600">{formatDate(employee.startAt)}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-gray-500" />
-                  <div>
-                    <p className="font-medium">End Date</p>
-                    <p className="text-gray-600">{formatDate(employee.endAt)}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+{/* RSVP Form Section */}
+<Card>
+  <CardHeader>
+    <CardTitle>RSVP Form</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="name">Name</Label>
+            <Input
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+              placeholder="Enter your full name"
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+              placeholder="Enter your email"
+              className="mt-1"
+            />
+          </div>
+        </div>
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="phone">Phone</Label>
+            <Input
+              id="phone"
+              name="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={handleInputChange}
+              required
+              placeholder="Enter your phone number"
+              className="mt-1"
+            />
+          </div>
+        </div>
       </div>
+
+      <div className="mt-6">
+        <Label>Your Response</Label>
+        <div className="mt-2 space-y-2">
+          <Button
+            type="button"
+            onClick={() => handleResponseChange('going')}
+            className={`w-full ${
+              formData.response === 'going' 
+                ? 'bg-green-600' 
+                : 'bg-gray-200 text-gray-700 hover:bg-green-100'
+            }`}
+          >
+            I will attend
+          </Button>
+          <Button
+            type="button"
+            onClick={() => handleResponseChange('not-going')}
+            className={`w-full ${
+              formData.response === 'not-going' 
+                ? 'bg-red-600' 
+                : 'bg-gray-200 text-gray-700 hover:bg-red-100'
+            }`}
+          >
+            I cannot attend
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-6">
+        <Button 
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          disabled={!formData.response}
+        >
+          Submit RSVP
+        </Button>
+      </div>
+    </form>
+  </CardContent>
+</Card>      </div>
     </div>
   );
 };
