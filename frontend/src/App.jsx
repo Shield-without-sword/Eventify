@@ -9,6 +9,8 @@ import SignupPage from './pages/SignupPage';
 import Statistics from './pages/Statistics';
 import Feature from './pages/Feature';
 import Image from './pages/Image';
+import RSVPPage from './Elements/RSVPPage';
+import PhotoGallery from './Elements/PhotoGallery';
 
 function App() {
   return (
@@ -18,7 +20,8 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-
+        <Route path="/rsvp/:id" element={<RSVPPage />} />
+<Route path="/photo" element={<PhotoGallery/>}/>
         {/* Dashboard routes with Sidebar */}
         <Route
           path="/dashboard/*"

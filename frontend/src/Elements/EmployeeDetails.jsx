@@ -50,90 +50,8 @@ const MonthlyReport = () => {
     }
   };
 
-  const generateReport = async (data) => {
-    if (!data) return;
 
-    const prompt = `
-      Analyze this [atient's data and provide a detailed monthly report. Focus on health and recommendations.
-      
-      Cattle Details:
-      Name: ${data.name}
-      capacity: ${data.capacity} years
-      location: ${data.location} kg
-      Breed: ${data.Breed}
-      Health Status/abouts: ${data.about || 'None reported'}
-      
-      Heath Data for the last month:
-      ${JSON.stringify(productionData)}
-      
-      Please provide a detailed report covering:
-      1. Overall Health Assessment:
-         - Analysis based on capacity, location, and any reported health issues
-         - location evaluation for the  capacity
-            
-      3. Recommendations:
-         - Specific health recommendations if needed
-         - Any preventive measures needed
-      
-      4. Future Outlook:
-         - Expected health trends
-         - Suggested monitoring points
-      
-      Please format the response in clear sections and provide specific, actionable insights.
-    `;
 
-    try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: prompt
-            }]
-          }],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 1000,
-          }
-        })
-      });
-
-      const result = await response.json();
-      return result.candidates[0].content.parts[0].text;
-    } catch (err) {
-      throw new Error('Failed to generate AI report: ' + err.message);
-    }
-  };
-
-const handleGenerateReport = async () => {
-  setIsLoading(true);
-  setError(null);
-  try {
-    const data = await fetchEmployeeDetails();
-    if (data) {
-      const aiReport = await generateReport(data);
-      
-      // Convert markdown to HTML
-      const htmlContent = converter.makeHtml(aiReport);
-      
-      setReport({
-        data: data,
-        analysis: htmlContent
-      });
-    }
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setIsLoading(false);
-  }
-};
-
- const handlePDFExport = async () => {
-    window.print(); // This will trigger the browser's print dialog which can save as PDF
-  };
   useEffect(() => {
     fetchEmployeeDetails();
   }, [id]);
@@ -142,20 +60,19 @@ const handleGenerateReport = async () => {
         <div className="container mx-auto p-4 max-w-6xl">
       <div className="mb-6 flex gap-4">
         <Button 
-          onClick={handleGenerateReport}
-          disabled={isLoading}
-          className="w-full md:w-auto"
-        >
-          {isLoading ? 'Generating Report...' : 'Generate Monthly Report'}
-        </Button>
+  variant="outline" 
+  onClick={() => navigate(`/photo`)} 
+  className="w-full md:w-auto"
+>
+  Go to RSVP Page
+</Button>
         <Button 
-          variant="outline"
-          onClick={handlePDFExport}
-          className="w-full md:w-auto"
-        >
-          <FileDown className="mr-2 h-4 w-4" />
-          Save as PDF
-        </Button>
+  variant="outline" 
+  onClick={() => navigate(`/rsvp/${id}`)} 
+  className="w-full md:w-auto"
+>
+  Go to RSVP Page
+</Button>
         <Button 
           variant="outline"
           onClick={() => navigate('/dashboard/employee')}
@@ -176,7 +93,7 @@ const handleGenerateReport = async () => {
           {/* Basic Info Card */}
 <Card className="p-6">
   <CardHeader>
-    <CardTitle>Patient Information</CardTitle>
+    <CardTitle>Event Information</CardTitle>
   </CardHeader>
   <CardContent>
     <div className="flex flex-col lg:flex-row gap-6">
@@ -200,54 +117,17 @@ const handleGenerateReport = async () => {
           </div>
           <div className="p-4 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
             <div className="text-sm text-gray-500">capacity</div>
-            <div className="text-lg font-semibold">{employee.capacity} years</div>
+            <div className="text-lg font-semibold">{employee.capacity} </div>
           </div>
           <div className="p-4 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
             <div className="text-sm text-gray-500">location</div>
-            <div className="text-lg font-semibold">{employee.location} kg</div>
+            <div className="text-lg font-semibold">{employee.location} </div>
           </div>
         </div>
       </div>
     </div>
   </CardContent>
           </Card>
-          
-
-          {/* Production Chart */}
-          {productionData.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Monthly Health Trends</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
-                      data={productionData}
-                      margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                      }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Line 
-                        type="monotone" 
-                        dataKey="amount" 
-                        stroke="#8884d8" 
-                        name="Progress"
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-          )}
 
           {/* AI Analysis */}
           {report && (

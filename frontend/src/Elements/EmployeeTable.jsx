@@ -42,13 +42,13 @@ function EmployeeTable({
             <span className="font-medium">abouts:</span> {employee.about}
           </p>
           <p className="text-sm text-gray-700">
-            <span className="font-medium">location:</span> {employee.location} kg
+            <span className="font-medium">location:</span> {employee.location} 
           </p>
           <p className="text-sm text-gray-700">
             <span className="font-medium">State:</span> {employee.Breed}
           </p>
           <p className="text-sm text-gray-700">
-            <span className="font-medium">capacity:</span> {employee.capacity} Years
+            <span className="font-medium">capacity:</span> {employee.capacity} 
           </p>
         </div>
         <div className="mt-4 flex justify-end space-x-2">

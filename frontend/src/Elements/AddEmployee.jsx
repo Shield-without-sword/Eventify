@@ -60,7 +60,7 @@ function AddEmployee() {
       <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg">
         <div className="flex items-center justify-between px-6 py-4 border-b">
           <h5 className="text-xl font-medium">
-            {updateMode ? 'Update Employee' : 'Add Employee'}
+            {updateMode ? 'Update Employee' : 'Add Event'}
           </h5>
         </div>
         <div className="p-6">

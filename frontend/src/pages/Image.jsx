@@ -179,7 +179,7 @@ const CattleTracker = () => {
     <div className="max-w-2xl mx-auto p-4">
       <Card>
         <CardHeader>
-          <CardTitle>Pateint Health Tracker</CardTitle>
+          <CardTitle>Event Photos</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="mb-6">
