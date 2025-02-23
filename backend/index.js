@@ -38,7 +38,7 @@ app.use('/api/rsvp', rsvpRoutes);
 
 // Start the server
 server.listen(PORT, () => {
-  console.log("Server is running on PORT: ${PORT}");
+  console.log(`Server is running on PORT: ${PORT}`);
 });
 
 // Add error handling

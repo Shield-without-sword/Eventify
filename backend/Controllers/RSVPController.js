@@ -79,7 +79,7 @@ const getAllRSVPs = async (req, res) => {
     }
 };
 
-// ✅ *EXPORT THE MISSING FUNCTION*
+// ✅ **EXPORT THE MISSING FUNCTION**
 module.exports = {
     createRSVPResponse,
     getAllRSVPs,

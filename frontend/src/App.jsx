@@ -10,7 +10,8 @@ import Statistics from './pages/Statistics';
 import Feature from './pages/Feature';
 import Image from './pages/Image';
 import RSVPPage from './Elements/RSVPPage';
-import PhotoGallery from './Elements/PhotoGallery';
+import emailjs from '@emailjs/browser';
+emailjs.init("JB2YupqQ3psOuc9HO");
 
 function App() {
   return (
@@ -21,14 +22,13 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/rsvp/:id" element={<RSVPPage />} />
-<Route path="/photo" element={<PhotoGallery/>}/>
-        {/* Dashboard routes with Sidebar */}
+        
         <Route
           path="/dashboard/*"
           element={
             <div className="flex">
-              <Sidebar />
-              <main className="flex-1 p-8 bg-slate-50 min-h-screen">
+            
+              <main className="flex-1 bg-slate-50 min-h-screen">
                 <Routes>
                   <Route path="/" element={<Navigate to="/dashboard/employee" />} />
                   <Route path="employee" element={<EmployeeManagementApp />} />

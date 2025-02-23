@@ -10,6 +10,7 @@ import { format, parseISO } from 'date-fns';
 import { Calendar, MapPin, Users} from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import emailjs from '@emailjs/browser';
 
 
 const RSVPPage = () => {
@@ -17,12 +18,15 @@ const RSVPPage = () => {
   const { id } = useParams();
   const [employee, setEmployee] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     response: 'null'
   });
+
+
   
   const formatDate = (dateString) => {
     if (!dateString) return 'Not specified';
@@ -47,29 +51,60 @@ const RSVPPage = () => {
     fetchEmployeeDetails();
   }, [id]);
 
+
+  const sendConfirmationEmail = async () => {
+    try {
+      const templateParams = {
+        to_name: formData.name,
+        to_email: formData.email,
+        event_name: employee.name,
+        event_date: formatDate(employee.startAt),
+        event_location: employee.location,
+        response_status: formData.response === 'going' ? 'Accepted' : 'Declined',
+      };
+
+
+      await emailjs.send(
+        'service_wtdtxrk',
+        'template_hetvc4v',
+        templateParams,
+        'JB2YupqQ3psOuc9HO'
+      );
+    } catch (error) {
+      console.error('Failed to send email:', error);
+      throw new Error('Failed to send confirmation email');
+    }
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     
-    // Validate if response is selected
     if (!formData.response) {
       setError('Please select whether you are accepting or declining the invitation');
+      setLoading(false);
       return;
     }
   
     try {
+      // First, create the RSVP response
       const response = await createRSVPResponse({
         ...formData,
         eventId: id
       });
   
       if (response.success) {
-        // You could add a success toast/alert here
+        // Then, send the confirmation email
+        await sendConfirmationEmail();
         navigate('/dashboard/employee');
       } else {
         throw new Error(response.message || 'Failed to submit RSVP');
       }
     } catch (err) {
-      setError('Failed to submit RSVP: ' + err.message);
+      setError('Failed to process RSVP: ' + err.message);
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -108,16 +143,6 @@ const RSVPPage = () => {
 
   return (
     <div className="container mx-auto p-4 max-w-6xl">
-      <div className="mb-6 flex gap-4">
-        <Button 
-          variant="outline"
-          onClick={() => navigate('/dashboard/employee')}
-          className="w-full md:w-auto"
-        >
-          Back to Dashboard
-        </Button>
-      </div>
-
       <div className="space-y-6">
         {/* Hero Section */}
         <Card className="p-6">
@@ -128,7 +153,7 @@ const RSVPPage = () => {
                   {employee.profileImage ? (
                     <img
                       src={employee.profileImage}
-                      alt={"${employee.name}'s photo"}
+                      alt={`${employee.name}'s photo`}
                       className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
@@ -250,17 +275,18 @@ const RSVPPage = () => {
       </div>
 
       <div className="mt-6">
-        <Button 
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-          disabled={!formData.response}
-        >
-          Submit RSVP
-        </Button>
-      </div>
-    </form>
+          <Button 
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            disabled={!formData.response || loading}
+          >
+            {loading ? 'Submitting...' : 'Submit RSVP'}
+          </Button>
+        </div>
+      </form>
   </CardContent>
-</Card>      </div>
+</Card>      
+</div>
     </div>
   );
 };
