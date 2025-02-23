@@ -142,11 +142,11 @@ const RSVPPage = () => {
   }
 
   return (
-    <div className="container mx-auto p-4 max-w-6xl">
+    <div className="container bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 ">
       <div className="space-y-6">
         {/* Hero Section */}
-        <Card className="p-6">
-          <CardContent>
+        <Card className="p-6 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+          <CardContent className="text-white" >
             <div className="flex flex-col lg:flex-row gap-6">
               <div className="lg:w-1/2">
                 <div className="relative rounded-lg overflow-hidden h-[400px]">
@@ -164,30 +164,30 @@ const RSVPPage = () => {
                 </div>
               </div>
 
-              <div className="lg:w-1/2 space-y-6">
-                <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="lg:w-1/2 space-y-6 ">
+                <div className="bg-gradient-to-br from-slate-700 via-purple-700 to-slate-700 p-6 rounded-lg">
                   <h2 className="text-2xl font-semibold mb-4">{employee.name}</h2>
                   <div className="space-y-4">
                     <div className="flex items-center gap-2">
-                      <MapPin className="h-5 w-5 text-gray-500" />
-                      <span>{employee.location || 'Location not specified'}</span>
+                      <MapPin className="h-5 w-5 text-white" />
+                      <span className="h-5 w-5 text-white" >{employee.location || 'Location not specified'}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Users className="h-5 w-5 text-gray-500" />
-                      <span>Capacity: {employee.capacity || 'Not specified'}</span>
+                      <Users className="h-5 w-5 text-white" />
+                      <span className="text-white" >Capacity: {employee.capacity || 'Not specified'}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Calendar className="h-5 w-5 text-gray-500" />
-                      <span>
-                        Period: {formatDate(employee.startAt)} - {formatDate(employee.endAt)}
+                      <Calendar className="h-5 w-5 text-white" />
+                      <span className=" text-white" >
+                        Period: {formatDate(employee.createdAt)} - {formatDate(employee.updatedAt)}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-gray-50 p-6 rounded-lg">
+                <div className="bg-gradient-to-br from-slate-700 via-purple-700 to-slate-700 p-6 rounded-lg">
                   <h3 className="text-xl font-semibold mb-3">About</h3>
-                  <p className="text-gray-700">{employee.about || 'No description available'}</p>
+                  <p className="text-white">{employee.about || 'No description available'}</p>
                 </div>
               </div>
             </div>
@@ -195,7 +195,7 @@ const RSVPPage = () => {
         </Card>
 
 {/* RSVP Form Section */}
-<Card>
+<Card className=" text-white bg-gradient-to-br from-slate-700 via-purple-700 to-slate-700">
   <CardHeader>
     <CardTitle>RSVP Form</CardTitle>
   </CardHeader>

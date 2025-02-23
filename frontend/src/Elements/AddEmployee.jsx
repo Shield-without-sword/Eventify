@@ -217,7 +217,7 @@ const AddEmployee = () => {
                     </div>
 
                     <div>
-                      <Label className="text-gray-200">Scale</Label>
+                    
                       <select
                         name="scale"
                         value={event.scale}

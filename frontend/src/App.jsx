@@ -11,6 +11,8 @@ import Feature from './pages/Feature';
 import Image from './pages/Image';
 import RSVPPage from './Elements/RSVPPage';
 import emailjs from '@emailjs/browser';
+import PhotoGallery from './Elements/PhotoGallery';
+import Documentation from './pages/Documentation';
 emailjs.init("JB2YupqQ3psOuc9HO");
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/rsvp/:id" element={<RSVPPage />} />
+        <Route path="/photo" element={<PhotoGallery />} />
+      
         
         <Route
           path="/dashboard/*"
@@ -38,6 +42,7 @@ function App() {
                   <Route path="feature" element={<Feature />} />
                   <Route path="statistics" element={<Statistics />} />
                   <Route path="Image" element={<Image />} />
+                    <Route path="/documentation" element={<Documentation />} />
                 </Routes>
               </main>
             </div>
