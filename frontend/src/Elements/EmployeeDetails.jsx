@@ -6,6 +6,66 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
 import { Camera, Calendar, MapPin, Users, Mail, Phone, Loader2 } from 'lucide-react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+const EventLocationMap = ({ location }) => {
+  useEffect(() => {
+    // Initialize map after component mounts
+    const map = L.map('map').setView([0, 0], 13);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Geocode the location and set marker
+    const searchLocation = async () => {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`
+        );
+        const data = await response.json();
+
+        if (data && data[0]) {
+          const { lat, lon } = data[0];
+          map.setView([lat, lon], 13);
+          
+          // Custom marker icon
+          const customIcon = L.divIcon({
+            html: `<div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center shadow-lg">
+                     <div class="w-6 h-6 text-white">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                       </svg>
+                     </div>
+                   </div>`,
+            className: '',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32]
+          });
+
+          L.marker([lat, lon], { icon: customIcon })
+            .addTo(map)
+            .bindPopup(location)
+            .openPopup();
+        }
+      } catch (error) {
+        console.error('Error geocoding location:', error);
+      }
+    };
+
+    searchLocation();
+
+    // Cleanup
+    return () => {
+      map.remove();
+    };
+  }, [location]);
+
+  return <div id="map" style={{ height: '400px' }} />;
+};
 
 const EmployeeDetails = () => {
   const navigate = useNavigate();
@@ -148,6 +208,9 @@ const EmployeeDetails = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Event Location Map */}
+            <EventLocationMap location={employee.location} />
 
             {/* RSVP Information Card */}
             <Card className="overflow-hidden border-none shadow-2xl bg-white/5 backdrop-blur-lg">
