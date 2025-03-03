@@ -1,9 +1,3 @@
-# Shield-Without-Sword
-
- python -m uvicorn main:app --reload --port 8000
-..
-
-
 # 🎉 Eventify – Seamless Event Invitations & Smart RSVP System  
 
 🚀 **A next-gen event invitation platform with QR-based check-ins & face recognition for event photos.** 🚀  
@@ -70,10 +64,13 @@ Eventify is a **MERN stack** application that allows users to create events, sha
 
 ---
 
-## 📜 Credits  
-- **Developers**: [@Shubham_Bendre](https://github.com/Shubham-Bendre) & Team  
+## 📜 **Credits**  
+- **Developers**: [@Shubham_Bendre](https://github.com/Shubham-Bendre), [@Malhar_Singh](https://github.com/Malhar2400), [@Yash_Chougule](https://github.com/YxASH)
 - **Inspiration**: Apple Invite & AI-powered event management  
 
 ---
 
-🎊 **Eventify – Smarter event invitations with face recognition!** 🎊  
+## 📂 
+```
+python -m uvicorn main:app --reload --port 8000
+```
