@@ -72,7 +72,7 @@ Eventify is a **MERN stack** application that allows users to create events, sha
 ![Face Detection](./screenshots/FaceSearch.png)  
 
 ### 8️⃣ Api Page
-![Api Page](./screenshots/face_detection.png)  
+![Api Page](./screenshots/APIDcoumentation.png)  
 
 ### 9️⃣ QR Code Email  
 ![QR Email](./screenshots/email&Qr.jpg) 
