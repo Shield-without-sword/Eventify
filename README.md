@@ -50,14 +50,29 @@ Eventify is a **MERN stack** application that allows users to create events, sha
 
 ## 📸 Screenshots  
 
-### 1️⃣ Event Creation Page  
-![Create Event](./screenshots/create_event.png)  
+### 1️⃣ Landing Page  
+![Landing Page](./screenshots/HomePage.png)  
+
+### 1️⃣ Dashboard 
+![Dashboard](./screenshots/Dashboard.png)  
+
+### 1️⃣ Event Details
+![Event Details](./screenshots/EventDetails.png)  
+
+### 1️⃣ Add Event  
+![Add Event](./screenshots/AddEvent.png)  
 
 ### 2️⃣ Guest RSVP Page  
-![RSVP](./screenshots/rsvp.png)  
+![RSVP](./screenshots/RSVPPage.png)  
+
+### 3️⃣ Image Gallery
+![Image Gallery](./screenshots/Gallery.png)  
 
 ### 3️⃣ Face Recognition in Album
-![Face Detection](./screenshots/face_detection.png)  
+![Face Detection](./screenshots/FaceSearch.png)  
+
+### 3️⃣ Api Page
+![Api Page](./screenshots/face_detection.png)  
 
 ### 4️⃣ QR Code Email  
 ![QR Email](./screenshots/email&Qr.jpg) 
